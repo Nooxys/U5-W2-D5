@@ -4,9 +4,6 @@ import CiroVitiello.U5W2D5.entities.Device;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/devices")
@@ -40,10 +37,5 @@ public class DeviceController {
     private void findDeviceByIdAndDelete(@PathVariable int deviceId) {
 
     }
-
-    @PostMapping("/upload/{deviceId}")
-    public Device uploadAvatar(@RequestParam("avatar") MultipartFile image, @PathVariable long deviceId) throws IOException {
-
-    }
-
+    
 }

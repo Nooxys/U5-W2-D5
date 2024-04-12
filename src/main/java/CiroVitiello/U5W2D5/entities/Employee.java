@@ -27,7 +27,7 @@ public class Employee {
     @JsonIgnore
     private List<Device> devices;
 
-    public Employee(String username, String name, String surname, String email, String avatar) {
+    public Employee(String username, String name, String surname, String email) {
         this.username = username;
         this.name = name;
         this.surname = surname;
