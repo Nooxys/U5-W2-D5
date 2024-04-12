@@ -1,7 +1,10 @@
 package CiroVitiello.U5W2D5.services;
 
+import CiroVitiello.U5W2D5.dto.AssignDeviceDTO;
 import CiroVitiello.U5W2D5.dto.NewDeviceDTO;
+import CiroVitiello.U5W2D5.dto.UploadDeviceDTO;
 import CiroVitiello.U5W2D5.entities.Device;
+import CiroVitiello.U5W2D5.exceptions.BadRequestException;
 import CiroVitiello.U5W2D5.exceptions.NotFoundException;
 import CiroVitiello.U5W2D5.repositories.DeviceDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,22 +30,22 @@ public class DeviceService {
     }
 
     public Device save(NewDeviceDTO body) {
-        return this.dd.save(new Device(body.typology(), body.status(), es.findById(body.employeeId())));
+        return this.dd.save(new Device(body.typology()));
     }
 
     public Device findById(long id) {
         return this.dd.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
-    public Device findByIdAndUpdate(long id, NewDeviceDTO body) {
+    public Device findByIdAndUpdate(long id, UploadDeviceDTO body) {
+        if (!body.status().equals("Assigned")) {
+            Device found = this.findById(id);
+            found.setStatus(body.status());
+            found.setEmployee(null);
+            dd.save(found);
+            return found;
+        } else throw new BadRequestException("The device cannot be set to Assigned");
 
-        Device found = this.findById(id);
-
-        found.setTypology(body.typology());
-        found.setStatus(body.status());
-        found.setEmployee(es.findById(body.employeeId()));
-        dd.save(found);
-        return found;
     }
 
     public void findByIdAndDelete(long id) {
@@ -50,4 +53,13 @@ public class DeviceService {
         this.dd.delete(found);
     }
 
+    public Device findByIdAndAssign(long id, AssignDeviceDTO body) {
+        Device found = this.findById(id);
+        if (found.getStatus().equals("Available") || (found.getStatus().equals("Assigned"))) {
+            found.setStatus("Assigned");
+            found.setEmployee(es.findById(body.employeeId()));
+            dd.save(found);
+            return found;
+        } else throw new BadRequestException(" This device is currently " + found.getStatus());
+    }
 }

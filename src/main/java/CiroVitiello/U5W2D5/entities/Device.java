@@ -16,14 +16,17 @@ public class Device {
     @Setter(AccessLevel.NONE)
     private long id;
     private String typology;
-    private String status;
+    private String status = " Available";
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    public Device(String typology, String status, Employee employee) {
+    public Device(String typology) {
         this.typology = typology;
-        this.status = status;
+    }
+
+    public Device(String typology, Employee employee) {
+        this.typology = typology;
         this.employee = employee;
     }
 }

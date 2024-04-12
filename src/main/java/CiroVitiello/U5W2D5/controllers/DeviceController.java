@@ -1,6 +1,8 @@
 package CiroVitiello.U5W2D5.controllers;
 
+import CiroVitiello.U5W2D5.dto.AssignDeviceDTO;
 import CiroVitiello.U5W2D5.dto.NewDeviceDTO;
+import CiroVitiello.U5W2D5.dto.UploadDeviceDTO;
 import CiroVitiello.U5W2D5.entities.Device;
 import CiroVitiello.U5W2D5.exceptions.BadRequestException;
 import CiroVitiello.U5W2D5.services.DeviceService;
@@ -39,7 +41,7 @@ public class DeviceController {
     }
 
     @PutMapping("/{deviceId}")
-    private Device findDeviceByIdAndUpdate(@PathVariable long deviceId, @RequestBody NewDeviceDTO body, BindingResult validation) {
+    private Device findDeviceByIdAndUpdate(@PathVariable long deviceId, @RequestBody UploadDeviceDTO body, BindingResult validation) {
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors());
         }
@@ -50,6 +52,14 @@ public class DeviceController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     private void findDeviceByIdAndDelete(@PathVariable long deviceId) {
         ds.findByIdAndDelete(deviceId);
+    }
+
+    @PutMapping("/assign/{deviceId}")
+    private Device findByIdAndAssign(@PathVariable long deviceId, @RequestBody AssignDeviceDTO body, BindingResult validation) {
+        if (validation.hasErrors()) {
+            throw new BadRequestException(validation.getAllErrors());
+        }
+        return ds.findByIdAndAssign(deviceId, body);
     }
 
 }
