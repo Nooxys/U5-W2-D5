@@ -34,25 +34,25 @@ public class EmployeeController {
     }
 
     @GetMapping("/{employeeId}")
-    private Employee findEmployeeById(@PathVariable int empId) {
-        return es.findById(empId);
+    private Employee findEmployeeById(@PathVariable long employeeId) {
+        return es.findById(employeeId);
 
     }
 
     @PutMapping("/{employeeId}")
-    private Employee findEmployeeByIdAndUpdate(@PathVariable int empId, @RequestBody NewEmployeeDTO body) {
-        return es.findByIdAndUpdate(empId, body);
+    private Employee findEmployeeByIdAndUpdate(@PathVariable long employeeId, @RequestBody NewEmployeeDTO body) {
+        return es.findByIdAndUpdate(employeeId, body);
     }
 
     @DeleteMapping("/{employeeId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    private void findEmployeeByIdAndDelete(@PathVariable int empId) {
-        es.findByIdAndDelete(empId);
+    private void findEmployeeByIdAndDelete(@PathVariable long employeeId) {
+        es.findByIdAndDelete(employeeId);
     }
 
     @PostMapping("/upload/{employeeId}")
-    public Employee uploadAvatar(@RequestParam("avatar") MultipartFile image, @PathVariable long empId) throws IOException {
-        return es.uploadImage(image, empId);
+    public Employee uploadAvatar(@RequestParam("avatar") MultipartFile image, @PathVariable long employeeId) throws IOException {
+        return es.uploadImage(image, employeeId);
     }
 
 }

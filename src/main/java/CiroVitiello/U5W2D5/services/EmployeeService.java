@@ -80,8 +80,8 @@ public class EmployeeService {
         this.ed.delete(found);
     }
 
-    public Employee uploadImage(MultipartFile image, long authorId) throws IOException {
-        Employee found = findById(authorId);
+    public Employee uploadImage(MultipartFile image, long employeeId) throws IOException {
+        Employee found = findById(employeeId);
         String url = (String) cloudinaryUploader.uploader().upload(image.getBytes(), ObjectUtils.emptyMap()).get("url");
         found.setAvatar(url);
         ed.save(found);

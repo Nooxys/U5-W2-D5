@@ -1,6 +1,9 @@
 package CiroVitiello.U5W2D5.controllers;
 
+import CiroVitiello.U5W2D5.dto.NewDeviceDTO;
 import CiroVitiello.U5W2D5.entities.Device;
+import CiroVitiello.U5W2D5.services.DeviceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -9,33 +12,36 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/devices")
 public class DeviceController {
 
+    @Autowired
+    private DeviceService ds;
+
     @GetMapping
     private Page<Device> getAllDevices(@RequestParam(defaultValue = "0") int page,
                                        @RequestParam(defaultValue = "10") int size,
                                        @RequestParam(defaultValue = "id") String sortBy) {
-
+        return this.ds.getDevices(page, size, sortBy);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    private Device saveDevice(@RequestBody Device body) {
-
+    private Device saveDevice(@RequestBody NewDeviceDTO body) {
+        return ds.save(body);
     }
 
     @GetMapping("/{deviceId}")
-    private Device findDeviceById(@PathVariable int deviceId) {
-
+    private Device findDeviceById(@PathVariable long deviceId) {
+        return ds.findById(deviceId);
     }
 
     @PutMapping("/{deviceId}")
-    private Device findDeviceByIdAndUpdate(@PathVariable int deviceId, @RequestBody Device body) {
-
+    private Device findDeviceByIdAndUpdate(@PathVariable long deviceId, @RequestBody NewDeviceDTO body) {
+        return ds.findByIdAndUpdate(deviceId, body);
     }
 
     @DeleteMapping("/{deviceId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    private void findDeviceByIdAndDelete(@PathVariable int deviceId) {
-
+    private void findDeviceByIdAndDelete(@PathVariable long deviceId) {
+        ds.findByIdAndDelete(deviceId);
     }
-    
+
 }
