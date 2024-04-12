@@ -70,7 +70,7 @@ public class EmployeeService {
         found.setName(body.name());
         found.setSurname(body.surname());
         found.setEmail(body.email());
-        found.setTemporaryAvatar();
+        if (!found.getAvatar().contains("cloudinary")) found.setTemporaryAvatar();
         this.ed.save(found);
         return found;
     }
