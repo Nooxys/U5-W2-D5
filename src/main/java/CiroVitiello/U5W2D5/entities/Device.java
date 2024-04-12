@@ -16,7 +16,7 @@ public class Device {
     @Setter(AccessLevel.NONE)
     private long id;
     private String typology;
-    private String status = " Available";
+    private String status = "Available";
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;

@@ -55,7 +55,11 @@ public class DeviceService {
 
     public Device findByIdAndAssign(long id, AssignDeviceDTO body) {
         Device found = this.findById(id);
-        if (found.getStatus().equals("Available") || (found.getStatus().equals("Assigned"))) {
+
+//        QUI FACCIO UN CONTROLLO SULLO SPAZIO INIZIALE DI AVAILABLE PERCHE' PER QUALCHE MOTIVO ALTRIMENTI SI BUGGA E MI LANCIA L'ERRORE
+//        " This device is currently  Available"  SU POSTMAN IN ALCUNE CIRCOSTANZE
+
+        if (found.getStatus().equals(" Available") || found.getStatus().equals("Available") || found.getStatus().equals("Assigned")) {
             found.setStatus("Assigned");
             found.setEmployee(es.findById(body.employeeId()));
             dd.save(found);
