@@ -2,10 +2,12 @@ package CiroVitiello.U5W2D5.controllers;
 
 import CiroVitiello.U5W2D5.dto.NewDeviceDTO;
 import CiroVitiello.U5W2D5.entities.Device;
+import CiroVitiello.U5W2D5.exceptions.BadRequestException;
 import CiroVitiello.U5W2D5.services.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,7 +26,10 @@ public class DeviceController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    private Device saveDevice(@RequestBody NewDeviceDTO body) {
+    private Device saveDevice(@RequestBody NewDeviceDTO body, BindingResult validation) {
+        if (validation.hasErrors()) {
+            throw new BadRequestException(validation.getAllErrors());
+        }
         return ds.save(body);
     }
 
@@ -34,7 +39,10 @@ public class DeviceController {
     }
 
     @PutMapping("/{deviceId}")
-    private Device findDeviceByIdAndUpdate(@PathVariable long deviceId, @RequestBody NewDeviceDTO body) {
+    private Device findDeviceByIdAndUpdate(@PathVariable long deviceId, @RequestBody NewDeviceDTO body, BindingResult validation) {
+        if (validation.hasErrors()) {
+            throw new BadRequestException(validation.getAllErrors());
+        }
         return ds.findByIdAndUpdate(deviceId, body);
     }
 

@@ -45,7 +45,10 @@ public class EmployeeController {
     }
 
     @PutMapping("/{employeeId}")
-    private Employee findEmployeeByIdAndUpdate(@PathVariable long employeeId, @RequestBody NewEmployeeDTO body) {
+    private Employee findEmployeeByIdAndUpdate(@PathVariable long employeeId, @RequestBody NewEmployeeDTO body, BindingResult validation) {
+        if (validation.hasErrors()) {
+            throw new BadRequestException(validation.getAllErrors());
+        }
         return es.findByIdAndUpdate(employeeId, body);
     }
 
